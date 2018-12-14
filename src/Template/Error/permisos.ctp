@@ -1,0 +1,1 @@
+<h1>No tienes suficientes permisos para acceder a esta página</h1>

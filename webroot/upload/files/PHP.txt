@@ -1,0 +1,193 @@
+ARCHIVOS TOCADOS AL PRINCIPIO:
+
+home.ctp -> header("Location: /login"); die();
+AppController.php
+UsuariosController.php
+EmpresasController.php
+routes.php  --> config/routes.php
+default.ctp
+index.ctp --> Usuarios/Empresas/Solicitudes/Requisitos/Categoria/Meritos
+view.ctp  --> Usuarios/Empresas/Solicitudes/Requisitos/Categoria/Meritos
+add.ctp   --> Usuarios/Empresas/Solicitudes/Requisitos/Categoria/Meritos
+edit.ctp  --> Usuarios/Empresas/Solicitudes/Requisitos/Categoria/Meritos
+login.ctp --> Usuarios
+UsuariosTable.php --> src/Model/Table/UsuariosTable
+EmpresasTable.php --> src/Model/Table/EmpresasTable
+SolicitudesTable.php  
+Usuario.php --> Model/Entity.
+bootstrap.php --> config/bootstrap   --> para la hora
+app.php   --> config/app.php           --> para la fecha.
+DateTimeWidget.php  --> vendor/cakephp/cakephp/src/View/Widget/DateTimeWidget.php   --> para los meses en español
+cake.css --> webroot/css/cake.css --> Para alinear la info de las tablas en las vistas a la izquierda 
+base.css --> webroot/css/cake.css --> Para ajustar el menu lateral mas a la izquierda y la vista principal ensancharla.
+
+/************************************************************************************************************/ 
+
+ANOTACIONES:
+
+1. HOW TO ADD JQUERY IN CAKEPHP 3:
+ https://stackoverflow.com/questions/37234938/how-to-add-jquery-in-cakephp
+ 
+ <?= $this->Html->script('jquery.min') in the default.
+
+2. FOR UPDATE ALL FIELDS ON A TABLE:
+https://book.cakephp.org/3.0/en/orm/saving-data.html#bulk-updates 
+
+3. SCREENSHOT WEBPAGE FIREFOX:
+Simply open the developer toolbar (shift + F2) and type:
+screenshot --fullpage
+
+4. UPLOAD FILES PLUGIN
+https://cakephp-upload.readthedocs.io/en/latest/index.html
+
+5. CAMBIAR EL ESTILO DE LOS MENSAJES FLASH
+	src/Template/Element/Flash/
+
+6. Horario Ingenia:
+	Lunes a Jueves 
+	8:00pm a 5:30pm
+
+	Viernes 
+	8:00pm a 2:00pm	
+-------------------------------------------------------------------------------------------------------------- 
+CONFIGURACIÓN FICHERO DE LA BASE DE DATOS C:\xampp\mysql\bin\my.ini
+
+max_allowed_packet = 8M				/ por defecto = 1M
+innodb_lock_wait_timeout = 28800	/ por defecto = 50
+innodb_log_file_size = 200M 		/ por defecto = 5M
+
+
+Nota: Para que no pete a la hora de subir PDFs pesados mayores de 800KB
+
+-------------------------------------------------------------------------------------------------------------- 
+CONFIGURACIÓN FICHERO DE PHP C:\xampp\php\php.ini
+
+post_max_size=8M			/ por defecto = 2M
+upload_max_filesize=8M		/ por defecto = 8M
+max_execution_time=30000   	/ por defecto = 30
+max_input_time=60000	   	/ por defecto = 60	
+memory_limit=2500M		   	/ por defecto = 128M	
+output_buffering = on		/ por defecto = 4096
+
+Nota: Para que no pete a la hora de subir FOTOS Y PDFs pesados mayores de 800KB
+
+-------------------------------------------------------------------------------------------------------------- 
+ 
+PERFILES:
+1. Admin:
+	Sin restricciones.
+ 
+2. Admin Empresa: 
+    Listar/Ver/Crear/Modificar/Borrar 
+		- Usuarios Modificadores y Usuarios Lectores de la misma empresa que el admin empresa. 
+		- Rol solo relacionado con empresa.
+		- Cuando editas un usuario el select de empresa no aparece.
+		
+    Listar/Ver/Crear/Modificar/Borrar 
+		- Convocatorias de su empresa
+
+3.Tecnico Evaluador:
+    Ver/Modificar                     
+		- Su Usuario Pero no el rol ni el campo activo.
+    Listar/Ver                        
+		- Convocatorias de su empresa.
+	Puede Evaluar		
+
+4.Observador  : 
+    Ver/Modificar                     
+		- Su Usuario Pero no el rol ni el campo activo.
+    Listar/Ver                        
+		- Convocatorias de su empresa.
+	NO puede Evaluar
+
+5. Demandante:
+    Ver/Modificar                     
+		- Su Usuario Pero no el rol ni el campo activo.               
+    Listar/Ver                        
+		- todas las Solicitudes.                                                         
+ 
+ 
+/**************************************************************************************/
+
+ERRORES GLOBALES: 
+
+1. Logueandote como solicitante, puedes editar tus datos pero la redirección ha de hacerla al index, de lo contrario salta ERROR PERMISOS.
+
+2. Los archivos que se eliminan no se eliminan fisicamente.
+
+3. La query en edit de solicitudes está mal = acciones.controlador="solicitudes" AND acciones.metodo="index num 23 -> cuando deberia de ser metodo edit y num 25
+   Este problema tiene otro problema dado a su vez que es que, si le damos acceso al link de "gestionar solicitudes" a tecnicos evaluadores y observadores, tenemos que 
+   los observadores da error de permisos cuando se clica en el link mientras que los técnicos evaluadores no. Teniendo ambos los mismos permisos en la "gestion de permisos"
+   Esto no sé por qué pasa. 
+
+4. El edit de usuario falla por la foto.   
+
+5. Las validaciones de fechas al crear y editar convocatorias están desactivadas porque las validaciones no funcionan del todo bien. Lo suyo sería hacerlas con javascript.
+
+6. Las alertas en loguin como cuando se refresca despues de que se desloguee automaticamente despues de un tiempo de inactividad están inactivas en loguin.
+
+/***************************************************************/
+
+ANOTACIONES EVALUACIÓN SOLICITUD (EMPRESA):
+  
+1. Poner validación de size de fichero 
+
+2. La imagen de perfil en la vista de solicitudes se agranda y se achica según la dimension del navegador.  
+
+3. La imagen de perfil en la vista de usuario aparece con el tamaño real de la imagen.
+
+
+HECHO:
+1. Si creas un usuario demandante y subes como foto un pdf te lo admite.
+
+1. El boton de añadir solicitud dentro de vista convocatoria como tecnico evaluador y obserdavor se ha de eliminar.
+   y Aparece el id cuando debe aparecer el nombre, apellido y el email.
+ 
+3. Añadir booleano solictud has merito, solicitud has requisito.
+
+
+CAMBIOS Y FALLOS EN PROCESO DE EVALUACIÓN POR PARTE DE EMPRESA:
+- Carrusel.
+- Puntuación méritos dinamico que siga la página.
+- Al cambiar el merito de id con el select, se refresca el div y como que se queda pillado, no puede volver a cambiar en el select.
+
+/***************************************************************/
+
+ANOTACIONES APLICAR SOLICITUD (SOLICITANTE):
+
+1. Linkar pdf con declaración responsable. -> guardar url en la base de datos.
+2. Conseguir subir fichero (foto)
+3. Query para las fechas:
+   ->where(['Usuarios.Empresa_id ='.$this->request->getSession()->read('Auth.User.Empresa_id').' AND (CURDATE() BETWEEN Convocatorias.FechaAltaConvocatoria AND Convocatorias.FechaBajaConvocatoria)'.$where.';']) 
+   ->toArray();   
+
+
+   
+   
+REUNION CON ALEX ANTES VACACIONES: 
+
+HECHO 1º Boton siguiente de requisitos: 
+   -> Chequear por ajax que hay al menos una evidencia para cada requisito.
+   -> Preguntar si quiere avanzar porque no se podrá volver a la página.
+   -> Hay que crear en la tabla solicitudes otro campo que valide si el div (pantalla)de requisitos debe mostrarse. (Lo mismo para Meritos)
+
+2º Meritos
+   -> Si clicamos en el boton "añadir nuevo merito", se crea otro registro en la tabla solicitud_has_meritos 
+      con los mismos valores que tendrá un id diferente. 
+	  ** Esto está hecho pero no aparece duplicado en pantalla porque la query muestra los "meritos" de esa convocatória. No muestra los "solicitud_has_meritos".
+
+HECHO {	  
+   -> Hay que distinguir por "tipos de méritos" solo dos: 
+			1 - Como el que está ahora.
+			2 - añadir un text input donde se acepta solo campos numéricos e irá almacenado en un nuevo campo nulable en la tabla solicitud_has_meritos. 
+    -> Se clica en finalizar misma operación que en boton siguientes de requisitos.
+}			
+
+HECHO			
+3º El último div:
+   -> Se mostrará solo cuando los 3 divs estén validados en la base de datos. 
+   -> Que va a contener lo mismo que el primer div pero sin el checkbox de declaracion responsable y el boton y con un mensaje que indique que ya está inscrito.   
+
+   
+   
+   
